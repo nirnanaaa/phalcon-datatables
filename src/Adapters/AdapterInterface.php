@@ -6,6 +6,9 @@ use DataTables\ParamsParser;
 
 abstract class AdapterInterface {
 
+  /**
+   * @var ParamsParser
+   */
   protected $parser  = null;
   protected $columns = [];
   protected $lentgh  = 30;
@@ -86,6 +89,15 @@ abstract class AdapterInterface {
         foreach($columnSearch as $key => $column) {
           if (!$this->columnExists($column['data'])) continue;
           $closure($column['data'], $this->sanitaze($column['search']['value']));
+        }
+        break;
+      case "external_search":
+        $columnSearch = $this->parser->getExternalSearch();
+        if (!$columnSearch) return;
+
+        foreach($columnSearch as $key => $column) {
+          if (!$this->columnExists($column['name'])) continue;
+          $closure($column['name'], $column['type'], $this->sanitaze($column['value']));
         }
         break;
       case "order":

@@ -42,6 +42,12 @@ class ParamsParser extends Component{
     }, $this->params['columns']));
   }
 
+  public function getExternalSearch() {
+    return array_filter(array_map(function($item) {
+      return (isset($item['value']) && strlen($item['value'])) ? $item : null;
+    }, $this->params['extFilterData']));
+  }
+
   public function getSearchableColumns() {
     return array_filter(array_map(function($item) {
       return (isset($item['searchable']) && $item['searchable'] === "true") ? $item['data'] : null;

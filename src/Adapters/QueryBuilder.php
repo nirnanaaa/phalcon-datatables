@@ -26,6 +26,12 @@ class QueryBuilder extends AdapterInterface{
       $this->builder->andWhere("{$column} LIKE :key_{$column}:", ["key_{$column}" => "%{$search}%"]);
     });
 
+
+    $this->bind('external_search', function($column, $type, $search) {
+      $this->builder->andWhere("{$column} LIKE :key_{$column}:", ["key_{$column}" => "%{$search}%"]);
+    });
+
+
     $this->bind('order', function($order) {
       $this->builder->orderBy(implode(', ', $order));
     });
