@@ -53,7 +53,7 @@ class TestController extends \Phalcon\Mvc\Controller {
                                 'User.balance',
                                 )
                             )
-                          ->from(array('Example\Models\User' => 'User));
+                          ->from(array('Example\Models\User' => 'User'));
 
           $dataTables = new DataTable();
           $dataTables->fromBuilder($builder)->sendResponse();
