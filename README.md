@@ -1,9 +1,4 @@
 
-![Build Status](https://img.shields.io/badge/branch-master-blue.svg) [![Build Status](https://travis-ci.org/m1ome/phalcon-datatables.svg?branch=master)](https://travis-ci.org/m1ome/phalcon-datatables) [![Coverage Status](https://coveralls.io/repos/m1ome/phalcon-datatables/badge.svg)](https://coveralls.io/r/m1ome/phalcon-datatables)
-
-[![Total Downloads](https://poser.pugx.org/m1ome/phalcon-datatables/downloads.svg)](https://packagist.org/packages/m1ome/phalcon-datatables)  [![License](https://poser.pugx.org/m1ome/phalcon-datatables/license.svg)](https://packagist.org/packages/m1ome/phalcon-datatables)
-
-
 # About
 This is a [Phalcon Framework](http://phalconphp.com/) adapter for [DataTables](http://www.datatables.net/).
 # Support
@@ -23,8 +18,14 @@ This is a [Phalcon Framework](http://phalconphp.com/) adapter for [DataTables](h
 * Paste into it
 ```json
 {
-    "require": {
-        "m1ome/phalcon-datatables": "1.*"
+    "repositories": [
+            {
+                "type": "vcs",
+                "url":  "https://github.com/duesentrieb26/phalcon-datatables.git"
+            }
+        ],
+        "require": {
+        "duesentrieb26/phalcon-datatables": "*"
     }
 }
 ```
@@ -44,8 +45,15 @@ class TestController extends \Phalcon\Mvc\Controller {
     public function indexAction() {
         if ($this->request->isAjax()) {
           $builder = $this->modelsManager->createBuilder()
-                          ->columns('id, name, email, balance')
-                          ->from('Example\Models\User');
+                          ->columns(
+                            array(
+                                'User.id',
+                                'User.name',
+                                'User.email as eMailAddress',
+                                'User.balance',
+                                )
+                            )
+                          ->from(array('Example\Models\User' => 'User));
 
           $dataTables = new DataTable();
           $dataTables->fromBuilder($builder)->sendResponse();
@@ -118,12 +126,12 @@ class User extends \Phalcon\Mvc\Model {
                         url: '/test/index',
                         method: 'POST'
                     },
-                    columns: {
+                    columns: [
                         {data: "id", searchable: false},
                         {data: "name"},
-                        {data: "email"},
+                        {data: "eMailAddress"},
                         {data: "balance", searchable: false}
-                    }
+                    ]
                 });
             });
         </script>
