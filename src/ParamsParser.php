@@ -3,19 +3,20 @@ namespace DataTables;
 
 use Phalcon\Mvc\User\Component;
 
-class ParamsParser extends Component{
+class ParamsParser extends Component {
 
   protected $params = [];
-  protected $page   = 1;
+  protected $page = 1;
 
   public function __construct($limit) {
     $params = [
-      'draw'    => null,
-      'start'   => 1,
-      'length'  => $limit,
-      'columns' => [],
-      'search'  => [],
-      'order'   => []
+      'draw'          => null,
+      'start'         => 1,
+      'length'        => $limit,
+      'columns'       => [],
+      'search'        => [],
+      'order'         => [],
+      'extFilterData' => [],
     ];
 
     $request = $this->di->get('request');
@@ -37,21 +38,33 @@ class ParamsParser extends Component{
   }
 
   public function getColumnsSearch() {
-    return array_filter(array_map(function($item) {
-      return (isset($item['search']['value']) && strlen($item['search']['value'])) ? $item : null;
-    }, $this->params['columns']));
+    return array_filter(
+      array_map(
+        function ($item) {
+          return (isset($item['search']['value']) && strlen($item['search']['value'])) ? $item : null;
+        }, $this->params['columns']
+      )
+    );
   }
 
   public function getExternalSearch() {
-    return array_filter(array_map(function($item) {
-      return (isset($item['value']) && strlen($item['value'])) ? $item : null;
-    }, $this->params['extFilterData']));
+    return array_filter(
+      array_map(
+        function ($item) {
+          return (isset($item['value']) && strlen($item['value'])) ? $item : null;
+        }, $this->params['extFilterData']
+      )
+    );
   }
 
   public function getSearchableColumns() {
-    return array_filter(array_map(function($item) {
-      return (isset($item['searchable']) && $item['searchable'] === "true") ? $item['data'] : null;
-    }, $this->params['columns']));
+    return array_filter(
+      array_map(
+        function ($item) {
+          return (isset($item['searchable']) && $item['searchable'] === "true") ? $item['data'] : null;
+        }, $this->params['columns']
+      )
+    );
   }
 
   public function getDraw() {

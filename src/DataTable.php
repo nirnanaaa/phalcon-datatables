@@ -40,6 +40,7 @@ class DataTable extends \Phalcon\Mvc\User\Plugin {
     $response->setContentType('application/json', 'utf8');
     $response->setJsonContent($this->getResponse());
     $response->send();
+    exit;
   }
 
   public function fromBuilder($builder, $columns = []) {
