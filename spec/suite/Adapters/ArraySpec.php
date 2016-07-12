@@ -120,6 +120,33 @@ describe("Array", function() {
 
   });
 
+  it("should search a int", function() {
+
+    $_GET = [
+      'search' => ['value' => '200'],
+      'columns' => [
+        [
+          'data' => 'name',
+          'searchable' => "true"
+        ],
+        [
+          'data' => 'balance',
+          'searchable' => "true"
+        ]
+      ]
+    ];
+
+    $dataTables = new ArrayAdapter(20);
+    $dataTables->setArray($this->array);
+    $dataTables->setColumns(['name', 'email', 'balance']);
+    $dataTables->setParser(new ParamsParser(10));
+
+    $response = $dataTables->getResponse();
+    expect(count($response['data']))->toBe(10);
+    expect($response['recordsFiltered'])->toBe(41);
+
+  });
+
   it("should work with a column search", function() {
 
     $_GET = [
@@ -196,7 +223,7 @@ describe("Array", function() {
       ],
       'order' => [
         [
-          'column' => 'name',
+          'column' => 0,
           'dir' => 'desc'
         ]
       ]
@@ -224,7 +251,7 @@ describe("Array", function() {
       ],
       'order' => [
         [
-          'column' => 'name',
+          'column' => 0,
           'dir' => 'asc'
         ]
       ]
